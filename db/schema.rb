@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_10_15_181443) do
+ActiveRecord::Schema.define(version: 2020_03_27_172134) do
 
   create_table "alerts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "course_id"
@@ -33,10 +33,10 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["user_id"], name: "index_alerts_on_user_id"
   end
 
-  create_table "articles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "articles", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "title"
-    t.datetime "created_at"
     t.datetime "updated_at"
+    t.datetime "created_at"
     t.date "views_updated_at"
     t.integer "namespace"
     t.string "rating"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["namespace", "wiki_id", "title"], name: "index_articles_on_namespace_and_wiki_id_and_title"
   end
 
-  create_table "articles_courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "articles_courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "article_id"
@@ -66,6 +66,15 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["course_id"], name: "index_articles_courses_on_course_id"
   end
 
+  create_table "ask_questions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "title", null: false
+    t.text "content"
+    t.integer "user_id"
+    t.integer "page_views", default: 0
+  end
+
   create_table "assignment_suggestions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "text"
     t.bigint "assignment_id"
@@ -75,13 +84,13 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["assignment_id"], name: "index_assignment_suggestions_on_assignment_id"
   end
 
-  create_table "assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "assignments", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "article_title"
     t.integer "user_id"
     t.integer "course_id"
     t.integer "article_id"
-    t.string "article_title"
     t.integer "role"
     t.integer "wiki_id"
     t.text "sandbox_url"
@@ -90,7 +99,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["course_id"], name: "index_assignments_on_course_id"
   end
 
-  create_table "blocks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "blocks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "kind"
     t.text "content"
     t.integer "week_id"
@@ -104,7 +113,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["week_id"], name: "index_blocks_on_week_id"
   end
 
-  create_table "campaigns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "campaigns", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.string "slug"
     t.string "url"
@@ -119,7 +128,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.boolean "register_accounts", default: false
   end
 
-  create_table "campaigns_courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "campaigns_courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "campaign_id"
     t.integer "course_id"
     t.datetime "created_at"
@@ -167,7 +176,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["course_id"], name: "index_categories_courses_on_course_id"
   end
 
-  create_table "commons_uploads", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "commons_uploads", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.string "file_name", limit: 2000
     t.datetime "uploaded_at"
@@ -181,7 +190,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["user_id"], name: "index_commons_uploads_on_user_id"
   end
 
-  create_table "courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "courses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -214,7 +223,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.integer "upload_usages_count", default: 0
     t.string "syllabus_file_name"
     t.string "syllabus_content_type"
-    t.bigint "syllabus_file_size"
+    t.integer "syllabus_file_size"
     t.datetime "syllabus_updated_at"
     t.integer "home_wiki_id"
     t.integer "recent_revision_count", default: 0
@@ -228,7 +237,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["slug"], name: "index_courses_on_slug", unique: true
   end
 
-  create_table "courses_users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "courses_users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "course_id"
@@ -249,7 +258,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["user_id"], name: "index_courses_users_on_user_id"
   end
 
-  create_table "courses_wikis", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "courses_wikis", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.integer "wiki_id"
     t.datetime "created_at", null: false
@@ -259,7 +268,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["wiki_id"], name: "index_courses_wikis_on_wiki_id"
   end
 
-  create_table "feedback_form_responses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "feedback_form_responses", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "subject"
     t.text "body"
     t.integer "user_id"
@@ -277,8 +286,8 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
 
   create_table "rapidfire_answer_groups", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "question_group_id"
-    t.string "user_type"
     t.integer "user_id"
+    t.string "user_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "course_id"
@@ -331,7 +340,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "revisions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "revisions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "characters", default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -341,15 +350,16 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.datetime "date"
     t.boolean "new_article", default: false
     t.boolean "deleted", default: false
+    t.boolean "system", default: false
     t.float "wp10"
     t.float "wp10_previous"
-    t.boolean "system", default: false
     t.integer "ithenticate_id"
     t.integer "wiki_id"
     t.integer "mw_rev_id"
     t.integer "mw_page_id"
     t.text "features"
     t.text "features_previous"
+    t.text "summary"
     t.index ["article_id", "date"], name: "index_revisions_on_article_id_and_date"
     t.index ["article_id"], name: "index_revisions_on_article_id"
     t.index ["user_id"], name: "index_revisions_on_user_id"
@@ -419,7 +429,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["survey_id"], name: "index_surveys_question_groups_on_survey_id"
   end
 
-  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tags", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "course_id"
     t.string "tag"
     t.string "key"
@@ -428,7 +438,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["course_id", "key"], name: "index_tags_on_course_id_and_key", unique: true
   end
 
-  create_table "ticket_dispenser_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "ticket_dispenser_messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "kind", limit: 1, default: 0
     t.integer "sender_id"
     t.bigint "ticket_id"
@@ -440,7 +450,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["ticket_id"], name: "index_ticket_dispenser_messages_on_ticket_id"
   end
 
-  create_table "ticket_dispenser_tickets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "ticket_dispenser_tickets", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "project_id"
     t.integer "owner_id"
     t.integer "status", limit: 1, default: 0
@@ -450,7 +460,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["project_id"], name: "index_ticket_dispenser_tickets_on_project_id"
   end
 
-  create_table "training_libraries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "training_libraries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "wiki_page"
     t.string "slug"
@@ -463,7 +473,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["slug"], name: "index_training_libraries_on_slug", unique: true
   end
 
-  create_table "training_modules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "training_modules", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name"
     t.string "estimated_ttc"
     t.string "wiki_page"
@@ -477,7 +487,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["slug"], name: "index_training_modules_on_slug", unique: true
   end
 
-  create_table "training_modules_users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "training_modules_users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "training_module_id"
     t.string "last_slide_completed"
@@ -488,15 +498,15 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["user_id", "training_module_id"], name: "index_training_modules_users_on_user_id_and_training_module_id", unique: true
   end
 
-  create_table "training_slides", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "training_slides", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin", force: :cascade do |t|
     t.string "title"
     t.string "title_prefix"
     t.string "summary"
     t.string "button_text"
     t.string "wiki_page"
-    t.text "assessment"
+    t.text "assessment", size: :medium
     t.text "content"
-    t.text "translations", size: :medium
+    t.text "translations"
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -508,7 +518,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.integer "user_id"
     t.string "image_file_name"
     t.string "image_content_type"
-    t.bigint "image_file_size"
+    t.integer "image_file_size"
     t.datetime "image_updated_at"
     t.string "location"
     t.string "institution"
@@ -516,7 +526,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.string "image_file_link"
   end
 
-  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "username"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -550,7 +560,7 @@ ActiveRecord::Schema.define(version: 2019_10_15_181443) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  create_table "weeks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "weeks", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci", force: :cascade do |t|
     t.string "title"
     t.integer "course_id"
     t.datetime "created_at"
